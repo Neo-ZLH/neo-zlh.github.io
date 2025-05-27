@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到 | 极客风格学术个人网站</title>
+    <meta name="description" content="404 - 页面未找到">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" href="./images/icon-192.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #00ff00;
+            font-family: 'Fira Code', monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex: 1;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            animation: glitch 1s infinite alternate-reverse;
+        }
+        
+        .error-message {
+            font-size: 1.5rem;
+            margin: 1rem 0 2rem;
+        }
+        
+        .error-ascii {
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.2;
+            margin: 2rem 0;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+        
+        .home-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            text-decoration: none;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .home-link:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            margin-top: 2rem;
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .prompt {
+            color: #00ff00;
+            margin-right: 0.5rem;
+        }
+        
+        .command {
+            color: #ffffff;
+            flex: 1;
+        }
+        
+        .cursor {
+            width: 8px;
+            height: 16px;
+            background-color: #00ff00;
+            animation: blink 1s infinite;
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em 0.05em 0 rgba(0, 0, 255, 0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75), -0.05em -0.05em 0 rgba(0, 0, 255, 0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75), -0.025em -0.025em 0 rgba(0, 255, 0, 0.75), -0.025em -0.05em 0 rgba(0, 0, 255, 0.75); }
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .error-message {
+                font-size: 1.2rem;
+            }
+            
+            .error-ascii {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+    
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+        <p class="error-message">页面未找到 | Page Not Found</p>
+        
+        <div class="error-ascii" id="errorAscii">
+            <!-- ASCII艺术将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="terminal-input">
+            <span class="prompt">$</span>
+            <span class="command">cd /home</span>
+            <span class="cursor"></span>
+        </div>
+        
+        <a href="./index.html" class="home-link">返回首页</a>
+    </div>
+    
+    <script>
+        // 生成Matrix背景
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 设置Canvas大小
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Matrix效果
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const fontSize = 14;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = [];
+        
+        // 初始化drops
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+        }
+        
+        function drawMatrix() {
+            // 半透明黑色背景，形成拖尾效果
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff00';
+            ctx.font = `${fontSize}px monospace`;
+            
+            for (let i = 0; i < drops.length; i++) {
+                // 随机字符
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                // 字符到达底部或随机重置
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 50);
+        
+        // 生成ASCII艺术
+        const errorAscii = document.getElementById('errorAscii');
+        const asciiArt = `
+  _____                              _   
+ |  ___|                            | |  
+ | |__ _ __ _ __ ___  _ __   __  __| |_ 
+ |  __| '__| '__/ _ \| '__| \ \/ /| __|
+ | |__| |  | | | (_) | |     >  < | |_ 
+ \____/_|  |_|  \___/|_|    /_/\_\ \__|
+                                        
+                                        
+`;
+        
+        errorAscii.textContent = asciiArt;
+        
+        // 模拟终端输入
+        const command = document.querySelector('.command');
+        const originalText = command.textContent;
+        command.textContent = '';
+        
+        let i = 0;
+        const typeInterval = setInterval(() => {
+            if (i < originalText.length) {
+                command.textContent += originalText.charAt(i);
+                i++;
+            } else {
+                clearInterval(typeInterval);
+                
+                // 3秒后自动重定向到首页
+                setTimeout(() => {
+                    command.textContent = 'redirecting to home...';
+                    
+                    setTimeout(() => {
+                        window.location.href = './index.html';
+                    }, 1500);
+                }, 3000);
+            }
+        }, 100);
+        
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

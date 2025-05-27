@@ -1,0 +1,534 @@
+/* 全局样式 */
+:root {
+    --cyber-green: #00FF00;
+    --cyber-blue: #00F7FF;
+    --dark-bg: #121212;
+    --darker-bg: #0a0a0a;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--darker-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cyber-green);
+    opacity: 0.5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+}
+
+/* 基础样式 */
+body {
+    background-color: var(--dark-bg);
+    color: #e0e0e0;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* 链接样式 */
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* 代码背景 */
+.code-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.05;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.code-line {
+    position: absolute;
+    font-size: 12px;
+    color: var(--cyber-green);
+    white-space: nowrap;
+    opacity: 0.3;
+    animation: code-rain linear infinite;
+}
+
+@keyframes code-rain {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+/* 打字机效果 */
+.typewriter h1 {
+    overflow: hidden;
+    border-right: 0.15em solid var(--cyber-green);
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: 
+        typing 3.5s steps(40, end),
+        blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--cyber-green) }
+}
+
+/* 社交图标 */
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--cyber-blue);
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background-color: rgba(0, 247, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
+}
+
+/* 论文卡片 */
+.publication-card {
+    background-color: var(--darker-bg);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.publication-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--cyber-green);
+    opacity: 0.7;
+}
+
+.publication-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+}
+
+.publication-card .year-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: rgba(0, 255, 0, 0.2);
+    color: var(--cyber-green);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.publication-card .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    padding-right: 60px; /* 为年份徽章留出空间 */
+}
+
+.publication-card .authors {
+    font-size: 14px;
+    color: #b0b0b0;
+    margin-bottom: 8px;
+}
+
+.publication-card .venue {
+    font-size: 14px;
+    color: var(--cyber-blue);
+    margin-bottom: 12px;
+}
+
+.publication-card .links {
+    display: flex;
+    gap: 8px;
+}
+
+.publication-card .link-button {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: rgba(0, 247, 255, 0.1);
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    border-radius: 4px;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.publication-card .link-button:hover {
+    background-color: rgba(0, 247, 255, 0.2);
+}
+
+/* 项目卡片 */
+.project-card {
+    background-color: var(--darker-bg);
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 247, 255, 0.2);
+}
+
+.project-card .project-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--cyber-blue);
+}
+
+.project-card .project-description {
+    color: #b0b0b0;
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.project-card .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.project-card .tech-badge {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: var(--cyber-green);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.project-card .install-command {
+    background-color: #1a1a1a;
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.project-card .install-command::before {
+    content: '$';
+    color: var(--cyber-green);
+    margin-right: 8px;
+}
+
+.project-card .project-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.project-card .stat-item {
+    display: flex;
+    align-items: center;
+}
+
+.project-card .stat-item svg {
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+}
+
+/* 博客卡片 */
+.blog-card {
+    background-color: var(--darker-bg);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+}
+
+.blog-card .blog-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.blog-card .blog-content {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card .blog-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.blog-card .blog-excerpt {
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-bottom: 12px;
+    flex-grow: 1;
+}
+
+.blog-card .blog-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #808080;
+}
+
+.blog-card .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.blog-card .blog-tag {
+    background-color: rgba(0, 247, 255, 0.1);
+    color: var(--cyber-blue);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* 标签云 */
+.tag-item {
+    display: inline-block;
+    background-color: rgba(0, 255, 0, 0.1);
+    color: var(--cyber-green);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.tag-item:hover {
+    background-color: rgba(0, 255, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.tag-item .tag-count {
+    margin-left: 4px;
+    background-color: rgba(0, 255, 0, 0.2);
+    padding: 1px 5px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+/* 活跃度热力图 */
+.activity-heatmap {
+    display: grid;
+    grid-template-columns: repeat(52, 1fr);
+    gap: 3px;
+    padding: 10px 0;
+}
+
+.heatmap-day {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.heatmap-day:hover {
+    transform: scale(1.2);
+}
+
+/* 图片瀑布流 */
+.gallery-container {
+    column-count: 3;
+    column-gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .gallery-container {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-container {
+        column-count: 1;
+    }
+}
+
+.gallery-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.gallery-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.gallery-item .exif-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(10, 10, 10, 0.8);
+    padding: 8px 12px;
+    font-size: 12px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .exif-info {
+    transform: translateY(0);
+}
+
+/* 终端模拟器 */
+.terminal-input {
+    width: 100%;
+    color: white;
+}
+
+.terminal-output {
+    margin-bottom: 16px;
+}
+
+.terminal-message {
+    margin-bottom: 8px;
+}
+
+.terminal-command {
+    color: var(--cyber-blue);
+}
+
+.terminal-result {
+    color: #b0b0b0;
+    padding-left: 16px;
+}
+
+.terminal-error {
+    color: #ff4d4d;
+    padding-left: 16px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .typewriter h1 {
+        animation: none;
+        border-right: none;
+        white-space: normal;
+    }
+    
+    .publications-timeline {
+        padding-left: 0;
+    }
+    
+    .publication-card::before {
+        width: 100%;
+        height: 4px;
+    }
+}
+
+/* 滚动动画 */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 404页面样式 */
+#error-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* PWA相关样式 */
+.install-prompt {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: var(--darker-bg);
+    border: 1px solid var(--cyber-green);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: none;
+}
+
+.install-prompt .prompt-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.install-prompt button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.install-prompt .install-button {
+    background-color: var(--cyber-green);
+    color: black;
+}
+
+.install-prompt .dismiss-button {
+    background-color: transparent;
+    border: 1px solid var(--cyber-green);
+    color: var(--cyber-green);
+}

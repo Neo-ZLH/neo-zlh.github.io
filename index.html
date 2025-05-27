@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="张梁瀚的个人学术网站 - 数据治理、大数据与数据库、人工智能研究">
+    <meta name="keywords" content="张梁瀚, Neo Zhang, 武汉大学, 计算机学院, 数据治理, 大数据, 数据库, 人工智能">
+    <meta name="author" content="张梁瀚">
+    <title>Neo Zhang | 张梁瀚 - 个人学术网站</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 自定义Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-green': '#00FF00',
+                        'cyber-blue': '#00F7FF',
+                        'dark-bg': '#121212',
+                        'darker-bg': '#0a0a0a',
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                },
+            },
+        }
+    </script>
+    <!-- 等宽字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- PWA 支持 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#121212">
+</head>
+<body class="bg-dark-bg text-gray-200 font-mono">
+    <!-- 终端导航栏 -->
+    <nav class="fixed w-full bg-darker-bg border-b border-cyber-green/30 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-cyber-green mr-2">$</span>
+                <span class="text-cyber-blue">cd</span>
+                <span class="ml-2">~/neo-zhang</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="hover:text-cyber-green transition-colors">Home</a>
+                <a href="#publications" class="hover:text-cyber-green transition-colors">Publications</a>
+                <a href="#projects" class="hover:text-cyber-green transition-colors">Projects</a>
+                <a href="#blog" class="hover:text-cyber-green transition-colors">Blog</a>
+                <a href="#gallery" class="hover:text-cyber-green transition-colors">Gallery</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-cyber-green">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darker-bg border-b border-cyber-green/30">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#home" class="hover:text-cyber-green transition-colors">Home</a>
+                <a href="#publications" class="hover:text-cyber-green transition-colors">Publications</a>
+                <a href="#projects" class="hover:text-cyber-green transition-colors">Projects</a>
+                <a href="#blog" class="hover:text-cyber-green transition-colors">Blog</a>
+                <a href="#gallery" class="hover:text-cyber-green transition-colors">Gallery</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 pt-24 pb-12">
+        <!-- 个人名片区 (Hero Section) -->
+        <section id="home" class="min-h-screen flex flex-col justify-center">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <pre id="ascii-art" class="text-cyber-green text-xs sm:text-sm md:text-base overflow-x-auto whitespace-pre"><!-- ASCII艺术将通过JS动态生成 --></pre>
+                    <div class="typewriter mt-4">
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold"><span class="text-cyber-blue">Neo</span> <span class="text-cyber-green">Zhang</span></h1>
+                    </div>
+                    <p class="mt-4 text-gray-400">探索数据的边界，连接智能的未来</p>
+                </div>
+                <div class="bg-darker-bg border border-cyber-green/30 rounded-lg p-6 shadow-lg shadow-cyber-green/5">
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="text-cyber-green mr-3">█</div>
+                            <div>
+                                <div class="text-gray-400">姓名：</div>
+                                <div>张梁瀚（Neo Zhang）</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-cyber-green mr-3">█</div>
+                            <div>
+                                <div class="text-gray-400">院校：</div>
+                                <div>武汉大学计算机学院</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-cyber-green mr-3">█</div>
+                            <div>
+                                <div class="text-gray-400">方向：</div>
+                                <div>数据治理，大数据与数据库，人工智能</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-cyber-green mr-3">█</div>
+                            <div>
+                                <div class="text-gray-400">GitHub：</div>
+                                <a href="https://github.com/Neo-ZLH" target="_blank" class="text-cyber-blue hover:underline flex items-center">
+                                    @Neo-ZLH
+                                    <span class="ml-2 px-2 py-1 text-xs bg-gray-700 rounded-full">Follow</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-cyber-green mr-3">█</div>
+                            <div>
+                                <div class="text-gray-400">邮箱：</div>
+                                <a href="mailto:lianghan.zhang@whu.edu.cn" class="text-cyber-blue hover:underline">lianghan.zhang@whu.edu.cn</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex space-x-4">
+                        <a href="https://github.com/Neo-ZLH" target="_blank" class="social-icon" title="GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://scholar.google.com" target="_blank" class="social-icon" title="Google Scholar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学术成果墙 -->
+        <section id="publications" class="py-16">
+            <div class="border-l-4 border-cyber-green pl-4 mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold">学术成果墙</h2>
+                <p class="text-gray-400 mt-2">数字矩阵中的知识结晶</p>
+            </div>
+            <div class="publications-timeline">
+                <!-- 论文列表将通过JS动态生成 -->
+                <div class="text-center text-gray-500 py-8">论文数据加载中...</div>
+            </div>
+        </section>
+
+        <!-- 项目陈列室 -->
+        <section id="projects" class="py-16">
+            <div class="border-l-4 border-cyber-blue pl-4 mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold">项目陈列室</h2>
+                <p class="text-gray-400 mt-2">代码构建的数字世界</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 projects-container">
+                <!-- 项目卡片将通过JS动态生成 -->
+                <div class="text-center text-gray-500 py-8 md:col-span-2">项目数据加载中...</div>
+            </div>
+        </section>
+
+        <!-- 技术博客聚合 -->
+        <section id="blog" class="py-16">
+            <div class="border-l-4 border-cyber-green pl-4 mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold">技术博客</h2>
+                <p class="text-gray-400 mt-2">思考与探索的记录</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 blog-container">
+                <!-- 博客文章将通过JS动态生成 -->
+                <div class="text-center text-gray-500 py-8 md:col-span-3">博客文章加载中...</div>
+            </div>
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-4">文章标签</h3>
+                <div class="flex flex-wrap gap-2 tags-cloud">
+                    <!-- 标签云将通过JS动态生成 -->
+                </div>
+            </div>
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-4">活跃度</h3>
+                <div class="bg-darker-bg border border-cyber-green/30 rounded-lg p-4">
+                    <div class="activity-heatmap">
+                        <!-- 热力图将通过JS动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 多媒体空间 -->
+        <section id="gallery" class="py-16">
+            <div class="border-l-4 border-cyber-blue pl-4 mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold">多媒体空间</h2>
+                <p class="text-gray-400 mt-2">数字与现实的交汇</p>
+            </div>
+            <div class="gallery-container">
+                <!-- 图片瀑布流将通过JS动态生成 -->
+                <div class="text-center text-gray-500 py-8">图片加载中...</div>
+            </div>
+            <div class="mt-12">
+                <h3 class="text-xl font-semibold mb-4">3D模型展示</h3>
+                <div class="bg-darker-bg border border-cyber-green/30 rounded-lg p-4 h-80">
+                    <div id="3d-model" class="w-full h-full">
+                        <!-- 3D模型将通过Three.js动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 终端模拟器 -->
+    <div id="terminal" class="fixed bottom-0 right-0 w-full md:w-96 bg-darker-bg border-t border-l border-cyber-green/30 shadow-lg transform translate-y-full transition-transform duration-300 z-40">
+        <div class="flex justify-between items-center p-2 border-b border-cyber-green/30">
+            <div class="text-sm">终端</div>
+            <button id="terminal-close" class="text-gray-400 hover:text-cyber-green">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+        <div class="p-4 h-64 overflow-y-auto font-mono text-sm">
+            <div class="terminal-output"></div>
+            <div class="terminal-input-line flex">
+                <span class="text-cyber-green mr-2">$</span>
+                <input type="text" class="terminal-input bg-transparent border-none outline-none flex-grow" placeholder="输入 'help' 获取命令列表...">
+            </div>
+        </div>
+    </div>
+
+    <!-- 404页面 (隐藏) -->
+    <div id="error-page" class="fixed inset-0 bg-blue-800 z-50 hidden flex flex-col justify-center items-center p-4">
+        <div class="text-white text-center">
+            <div class="text-6xl font-bold mb-4">:(</div>
+            <h1 class="text-2xl font-bold mb-4">404 - 页面未找到</h1>
+            <p class="mb-6">SYSTEM_PAGE_FAULT_IN_NONPAGED_AREA</p>
+            <div class="bg-white bg-opacity-10 p-4 rounded mb-6 text-left">
+                <p>技术信息:</p>
+                <p>*** STOP: 0x00000050 (0xFD3094C2,0x00000001,0xFBFE7617,0x00000000)</p>
+            </div>
+            <button id="error-back" class="bg-white text-blue-800 px-4 py-2 rounded hover:bg-opacity-90 transition-colors">返回主页</button>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-darker-bg border-t border-cyber-green/30 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>&copy; <span id="current-year"></span> Neo Zhang</p>
+                    <p class="text-sm text-gray-500">使用 HTML, CSS, JavaScript 和 ❤️ 构建</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#home" class="hover:text-cyber-green transition-colors">Home</a>
+                    <a href="#publications" class="hover:text-cyber-green transition-colors">Publications</a>
+                    <a href="#projects" class="hover:text-cyber-green transition-colors">Projects</a>
+                    <a href="#blog" class="hover:text-cyber-green transition-colors">Blog</a>
+                    <a href="#gallery" class="hover:text-cyber-green transition-colors">Gallery</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 脚本 -->
+    <script src="js/main.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/ascii-art.js"></script>
+    <script src="js/publications.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/blog.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="js/3d-model.js"></script>
+    <script>
+        // 设置当前年份
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
