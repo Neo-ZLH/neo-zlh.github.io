@@ -16,7 +16,7 @@ const translations = {
         // 个人信息
         'slogan': '探索数据的边界，连接智能的未来',
         'info_name': '姓名：',
-        'info_name_value': '张梁瀚（Neo Zhang）',
+        'info_name_value': '张梁瀚 Lianghan Zhang（Neo-Zhang）',
         'info_school': '院校：',
         'info_school_value': '武汉大学计算机学院',
         'info_research': '方向：',
@@ -54,9 +54,9 @@ const translations = {
         
         // 页脚
         'footer_built': '使用 HTML, CSS, JavaScript 和 ❤️ 构建',
-        
+       
         // 语言切换
-        'language_switch': '切换到英文'
+        'language_switch': '英文'
     },
     'en': {
         // Navigation
@@ -69,7 +69,7 @@ const translations = {
         // Personal Info
         'slogan': 'Exploring the boundaries of data, connecting the future of intelligence',
         'info_name': 'Name:',
-        'info_name_value': 'Neo Zhang (张梁瀚)',
+        'info_name_value': 'Lianghan Zhang 张梁瀚(Neo-Zhang)',
         'info_school': 'Institution:',
         'info_school_value': 'School of Computer Science, Wuhan University',
         'info_research': 'Research:',
@@ -109,7 +109,7 @@ const translations = {
         'footer_built': 'Built with HTML, CSS, JavaScript and ❤️',
         
         // Language Switch
-        'language_switch': 'Switch to Chinese'
+        'language_switch': 'Chinese'
     }
 };
 
