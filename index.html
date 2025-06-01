@@ -146,22 +146,35 @@
         <!-- 学术成果墙 -->
         <section id="publications" class="py-16">
             <div class="border-l-4 border-cyber-green pl-4 mb-8">
-                <h2 class="text-2xl md:text-3xl font-bold" data-i18n="publications_title">学术成果墙</h2>
-                <p class="text-gray-400 mt-2" data-i18n="publications_subtitle">数字矩阵中的知识结晶</p>
+                <h2 class="text-2xl md:text-3xl font-bold fade-in" data-i18n="publications_title">学术成果墙</h2>
+                <p class="text-gray-400 mt-2 fade-in" data-i18n="publications_subtitle">数字矩阵中的知识结晶</p>
             </div>
             <div class="publications-timeline">
-                <!-- 论文列表将通过JS动态生成 -->
-                <div class="text-center text-gray-500 py-8" data-i18n="loading_publications">论文数据加载中...</div>
+                <!-- 静态测试卡片 -->
+                <div class="publication-card static-card publication-card-visible" style="display: block; visibility: visible; opacity: 1;">
+                    <div class="year-badge">2023</div>
+                    <h4 class="title">静态测试论文标题</h4>
+                    <div class="authors">静态测试作者</div>
+                    <div class="venue">静态测试期刊, 2023</div>
+                    <div class="links">
+                        <a href="#" target="_blank" class="link-button">DOI</a>
+                        <a href="#" target="_blank" class="link-button">URL</a>
+                        <button class="abstract-toggle link-button">Abstract</button>
+                    </div>
+                    <div class="abstract-content" style="display: none;">
+                        这是一个静态测试摘要，用于验证样式是否正确显示。
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- 项目陈列室 -->
         <section id="projects" class="py-16">
             <div class="border-l-4 border-cyber-blue pl-4 mb-8">
-                <h2 class="text-2xl md:text-3xl font-bold" data-i18n="projects_title">项目陈列室</h2>
-                <p class="text-gray-400 mt-2" data-i18n="projects_subtitle">代码构建的数字世界</p>
+                <h2 class="text-2xl md:text-3xl font-bold fade-in" data-i18n="projects_title">项目陈列室</h2>
+                <p class="text-gray-400 mt-2 fade-in" data-i18n="projects_subtitle">代码构建的数字世界</p>
             </div>
-            <div class="grid md:grid-cols-2 gap-6 projects-container">
+            <div class="grid md:grid-cols-2 gap-6 projects-container fade-in">
                 <!-- 项目卡片将通过JS动态生成 -->
                 <div class="text-center text-gray-500 py-8 md:col-span-2" data-i18n="loading_projects">项目数据加载中...</div>
             </div>
@@ -170,20 +183,20 @@
         <!-- 技术博客聚合 -->
         <section id="blog" class="py-16">
             <div class="border-l-4 border-cyber-green pl-4 mb-8">
-                <h2 class="text-2xl md:text-3xl font-bold" data-i18n="blog_title">技术博客</h2>
-                <p class="text-gray-400 mt-2" data-i18n="blog_subtitle">思考与探索的记录</p>
+                <h2 class="text-2xl md:text-3xl font-bold fade-in" data-i18n="blog_title">技术博客</h2>
+                <p class="text-gray-400 mt-2 fade-in" data-i18n="blog_subtitle">思考与探索的记录</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-6 blog-container">
+            <div class="grid md:grid-cols-3 gap-6 blogs-container fade-in">
                 <!-- 博客文章将通过JS动态生成 -->
                 <div class="text-center text-gray-500 py-8 md:col-span-3" data-i18n="loading_blogs">博客文章加载中...</div>
             </div>
-            <div class="mt-8">
+            <div class="mt-8 fade-in">
                 <h3 class="text-xl font-semibold mb-4" data-i18n="tags_title">文章标签</h3>
                 <div class="flex flex-wrap gap-2 tags-cloud">
                     <!-- 标签云将通过JS动态生成 -->
                 </div>
             </div>
-            <div class="mt-8">
+            <div class="mt-8 fade-in">
                 <h3 class="text-xl font-semibold mb-4" data-i18n="activity_title">活跃度</h3>
                 <div class="bg-darker-bg border border-cyber-green/30 rounded-lg p-4">
                     <div class="activity-heatmap">
@@ -196,10 +209,13 @@
         <!-- 多媒体空间 -->
         <section id="gallery" class="py-16">
             <div class="border-l-4 border-cyber-blue pl-4 mb-8">
-                <h2 class="text-2xl md:text-3xl font-bold" data-i18n="gallery_title">多媒体空间</h2>
-                <p class="text-gray-400 mt-2" data-i18n="gallery_subtitle">数字与现实的交汇</p>
+                <h2 class="text-2xl md:text-3xl font-bold fade-in" data-i18n="gallery_title">多媒体空间</h2>
+                <p class="text-gray-400 mt-2 fade-in" data-i18n="gallery_subtitle">数字与现实的交汇</p>
             </div>
-            <div class="gallery-container">
+            <div class="gallery-filter flex flex-wrap gap-2 mb-4 fade-in">
+                <!-- 过滤按钮将通过JS动态生成 -->
+            </div>
+            <div class="gallery-container fade-in">
                 <!-- 图片瀑布流将通过JS动态生成 -->
                 <div class="text-center text-gray-500 py-8" data-i18n="loading_gallery">图片加载中...</div>
             </div>
@@ -265,7 +281,7 @@
     <script src="js/ascii-art.js"></script>
     <script src="js/publications.js"></script>
     <script src="js/projects.js"></script>
-    <script src="js/blog.js"></script>
+    <script src="js/blogs.js"></script>
     <script src="js/gallery.js"></script>
     <!-- Three.js 和 3D模型脚本已移除 -->
     <script src="js/i18n.js"></script>

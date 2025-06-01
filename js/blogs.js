@@ -3,11 +3,11 @@
  * 负责加载和展示博客文章
  */
 
-// DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', () => {
-    // 初始化博客聚合
-    initBlogs();
-});
+// 注释掉DOMContentLoaded事件监听器，由main.js统一管理初始化
+// document.addEventListener('DOMContentLoaded', () => {
+//     // 初始化博客聚合
+//     initBlogs();
+// });
 
 /**
  * 初始化博客聚合
@@ -16,9 +16,12 @@ function initBlogs() {
     const blogsContainer = document.querySelector('.blogs-container');
     if (!blogsContainer) return;
     
+    console.log('Initializing blogs...');
+    
     // 获取博客数据
     fetchBlogs()
         .then(blogs => {
+            console.log('Blogs fetched successfully:', blogs);
             // 清空加载提示
             blogsContainer.innerHTML = '';
             
@@ -46,7 +49,7 @@ async function fetchBlogs() {
     await new Promise(resolve => setTimeout(resolve, 800));
     
     // 示例博客数据
-    return [
+    const blogs = [
         {
             id: 1,
             title: '分布式系统中的一致性协议：Raft与Paxos比较',
@@ -95,9 +98,12 @@ async function fetchBlogs() {
             tags: ['分布式系统', '微服务', '可观测性', '性能监控'],
             readTime: 14,
             url: '#',
-            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22120%22%20viewBox%3D%220%200%20200%20120%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22200%22%20height%3D%22120%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%2240%22%20y%3D%2260%22%3ETracing%3C%2Ftext%3E%3C%2Fsvg%3E'
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22120%22%20viewBox%3D%220%200%20200%20120%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22200%22%20height%3D%22120%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%2230%22%20y%3D%2260%22%3ETracing%3C%2Ftext%3E%3C%2Fsvg%3E'
         }
     ];
+    
+    console.log('Blogs data prepared:', blogs);
+    return blogs;
 }
 
 /**

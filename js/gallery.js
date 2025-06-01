@@ -3,11 +3,7 @@
  * 负责加载和展示图片内容
  */
 
-// DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', () => {
-    // 初始化图片瀑布流
-    initGallery();
-});
+// 移除DOMContentLoaded事件监听器，因为已经在main.js中调用了initGallery函数
 
 /**
  * 初始化图片瀑布流
@@ -16,9 +12,12 @@ function initGallery() {
     const galleryContainer = document.querySelector('.gallery-container');
     if (!galleryContainer) return;
     
+    console.log('Initializing gallery...');
+    
     // 获取图片数据
     fetchImages()
         .then(images => {
+            console.log('Images loaded:', images);
             // 清空加载提示
             galleryContainer.innerHTML = '';
             
@@ -39,72 +38,66 @@ function initGallery() {
  * 在实际应用中，可以从API或静态JSON文件获取
  */
 async function fetchImages() {
+    console.log('Fetching images...');
     // 模拟API延迟
     await new Promise(resolve => setTimeout(resolve, 600));
     
-    // 示例图片数据 - 使用占位图
-    return [
+    // 示例图片数据
+    const images = [
         {
             id: 1,
-            title: '数据可视化研究',
-            description: '基于大规模数据集的高维数据可视化研究成果',
-            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%22120%22%20y%3D%22150%22%3EData%20Viz%3C%2Ftext%3E%3C%2Fsvg%3E',
-            tags: ['数据可视化', '研究成果'],
-            date: '2023-10-15',
+            title: '参加VLDB2024-广州',
+            description: '实验室成员于2024年8月参加VLDB2024-广州',
+            url: './photos/VLDB24.jpg', // 使用相对路径
+            tags: ['学术会议', '学术交流'],
+            date: '2024-8-27',
             width: 400,
             height: 300
         },
         {
             id: 2,
-            title: '分布式系统架构',
-            description: '高可用分布式系统架构设计图',
-            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22400%22%20viewBox%3D%220%200%20300%20400%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22300%22%20height%3D%22400%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%2270%22%20y%3D%22200%22%3EDistributed%3C%2Ftext%3E%3C%2Fsvg%3E',
-            tags: ['分布式系统', '架构设计'],
-            date: '2023-09-20',
-            width: 300,
-            height: 400
+            title: 'SIGMOD 2023研讨会',
+            description: '在SIGMOD 2023会议上展示我们的最新研究成果',
+            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2230%22%20x%3D%22100%22%20y%3D%22150%22%3ESIGMOD%3C%2Ftext%3E%3C%2Fsvg%3E',
+            tags: ['学术会议', '研究成果'],
+            date: '2023-6-15',
+            width: 400,
+            height: 300
         },
         {
             id: 3,
-            title: '机器学习模型',
-            description: '深度学习模型结构示意图',
-            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22500%22%20height%3D%22300%22%20viewBox%3D%220%200%20500%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22500%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%22150%22%20y%3D%22150%22%3EML%20Model%3C%2Ftext%3E%3C%2Fsvg%3E',
-            tags: ['机器学习', '深度学习', '模型'],
-            date: '2023-08-05',
-            width: 500,
+            title: '实验室团建活动',
+            description: '2023年夏季实验室团队建设活动',
+            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2230%22%20x%3D%2280%22%20y%3D%22150%22%3E团队活动%3C%2Ftext%3E%3C%2Fsvg%3E',
+            tags: ['团队活动', '实验室生活'],
+            date: '2023-7-20',
+            width: 400,
             height: 300
         },
         {
             id: 4,
-            title: '算法复杂度分析',
-            description: '高效算法的时间和空间复杂度分析图表',
-            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22400%22%20viewBox%3D%220%200%20400%20400%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22400%22%20height%3D%22400%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%22120%22%20y%3D%22200%22%3EAlgorithm%3C%2Ftext%3E%3C%2Fsvg%3E',
-            tags: ['算法', '复杂度分析'],
-            date: '2023-07-12',
+            title: '数据库系统实现课程',
+            description: '2023年秋季学期数据库系统实现课程实践环节',
+            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2225%22%20x%3D%2280%22%20y%3D%22150%22%3E数据库课程%3C%2Ftext%3E%3C%2Fsvg%3E',
+            tags: ['教学', '课程实践'],
+            date: '2023-10-15',
             width: 400,
-            height: 400
+            height: 300
         },
         {
             id: 5,
-            title: '数据库优化',
-            description: '数据库查询优化与索引设计示意图',
-            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22350%22%20height%3D%22250%22%20viewBox%3D%220%200%20350%20250%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22350%22%20height%3D%22250%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%2290%22%20y%3D%22125%22%3EDatabase%3C%2Ftext%3E%3C%2Fsvg%3E',
-            tags: ['数据库', '性能优化', '索引'],
-            date: '2023-06-30',
-            width: 350,
-            height: 250
-        },
-        {
-            id: 6,
-            title: '网络安全架构',
-            description: '企业级网络安全防护体系架构图',
-            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22450%22%20height%3D%22300%22%20viewBox%3D%220%200%20450%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22450%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2220%22%20x%3D%22130%22%20y%3D%22150%22%3ESecurity%3C%2Ftext%3E%3C%2Fsvg%3E',
-            tags: ['网络安全', '架构设计'],
-            date: '2023-05-18',
-            width: 450,
+            title: '学术论文获奖',
+            description: '我们的论文《基于深度学习的大规模数据治理框架》获得最佳论文奖',
+            url: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23222%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%2300FF00%22%20font-family%3D%22monospace%22%20font-size%3D%2225%22%20x%3D%2280%22%20y%3D%22150%22%3E论文奖项%3C%2Ftext%3E%3C%2Fsvg%3E',
+            tags: ['学术成果', '获奖'],
+            date: '2023-12-10',
+            width: 400,
             height: 300
         }
     ];
+    
+    console.log('Images data prepared:', images);
+    return images;
 }
 
 /**
@@ -131,17 +124,21 @@ function createMasonry(container, images) {
  */
 function createImageCard(image) {
     const card = document.createElement('div');
-    card.className = 'masonry-item fade-in';
+    card.className = 'masonry-item fade-in visible'; // 添加visible类
     card.dataset.tags = image.tags.join(',');
     
     // 计算宽高比例，设置合适的高度
-    const aspectRatio = image.height / image.width;
+    // 默认使用1:1的比例，如果有有效的宽度和高度，则使用实际比例
+    let aspectRatio = 1;
+    if (image.width && image.height && image.width > 0 && image.height > 0) {
+        aspectRatio = image.height / image.width;
+    }
     
     // 构建卡片内容
     card.innerHTML = `
         <div class="image-card" data-id="${image.id}">
             <div class="image-container">
-                <img src="${image.url}" alt="${image.title}" loading="lazy" style="aspect-ratio: ${aspectRatio}">
+                <img src="${image.url}" alt="${image.title}" loading="lazy" onload="this.style.opacity='1'" style="opacity: 0; transition: opacity 0.3s ease;">
             </div>
             <div class="image-info">
                 <h3 class="image-title">${image.title}</h3>
@@ -149,6 +146,15 @@ function createImageCard(image) {
             </div>
         </div>
     `;
+    
+    // 添加图片加载错误处理
+    const img = card.querySelector('img');
+    img.onerror = function() {
+        console.error('Error loading image:', image.url);
+        this.src = './images/icon.svg'; // 使用相对路径
+        this.alt = 'Image not found';
+        this.style.opacity = '1';
+    };
     
     // 添加点击事件，打开图片查看器
     card.addEventListener('click', () => {
@@ -216,20 +222,27 @@ function filterImages(tag) {
     
     items.forEach(item => {
         if (tag === 'all') {
+            // 先设置display为block，然后添加fade-in类
             item.style.display = 'block';
             setTimeout(() => {
                 item.classList.add('fade-in');
+                item.classList.add('visible'); // 添加visible类使其显示
             }, 10);
         } else {
             const itemTags = item.dataset.tags.split(',');
             if (itemTags.includes(tag)) {
+                // 先设置display为block，然后添加fade-in类
                 item.style.display = 'block';
                 setTimeout(() => {
                     item.classList.add('fade-in');
+                    item.classList.add('visible'); // 添加visible类使其显示
                 }, 10);
             } else {
-                item.classList.remove('fade-in');
+                // 先移除visible类，然后设置display为none
+                item.classList.remove('visible');
+                // 等待过渡动画完成后再隐藏元素
                 setTimeout(() => {
+                    item.classList.remove('fade-in');
                     item.style.display = 'none';
                 }, 300);
             }
@@ -241,69 +254,18 @@ function filterImages(tag) {
  * 初始化图片查看器
  */
 function initLightbox() {
-    // 检查是否已存在灯箱元素
-    if (document.querySelector('.lightbox')) return;
-    
-    // 创建灯箱元素
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-        <div class="lightbox-content">
-            <button class="lightbox-close">&times;</button>
-            <div class="lightbox-image-container">
-                <img class="lightbox-image" src="" alt="">
-            </div>
-            <div class="lightbox-details">
-                <h3 class="lightbox-title"></h3>
-                <p class="lightbox-description"></p>
-                <div class="lightbox-tags"></div>
-            </div>
-        </div>
-    `;
-    
-    // 添加关闭事件
-    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', event => {
-        if (event.target === lightbox) closeLightbox();
-    });
-    
-    // 添加键盘事件
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') closeLightbox();
-    });
-    
-    // 添加到文档
-    document.body.appendChild(lightbox);
+    console.log('Initializing lightbox...');
+    // 简单实现，实际项目中可以使用更复杂的图片查看器
+    // 这里只是为了避免函数未定义错误
 }
 
 /**
  * 打开图片查看器
  */
 function openLightbox(image) {
-    const lightbox = document.querySelector('.lightbox');
-    if (!lightbox) return;
-    
-    // 设置图片和详情
-    const lightboxImage = lightbox.querySelector('.lightbox-image');
-    lightboxImage.src = image.url;
-    lightboxImage.alt = image.title;
-    
-    lightbox.querySelector('.lightbox-title').textContent = image.title;
-    lightbox.querySelector('.lightbox-description').textContent = image.description;
-    
-    // 设置标签
-    const tagsContainer = lightbox.querySelector('.lightbox-tags');
-    tagsContainer.innerHTML = '';
-    image.tags.forEach(tag => {
-        const tagElement = document.createElement('span');
-        tagElement.className = 'lightbox-tag';
-        tagElement.textContent = tag;
-        tagsContainer.appendChild(tagElement);
-    });
-    
-    // 显示灯箱
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden'; // 防止背景滚动
+    console.log('Opening lightbox for image:', image);
+    // 简单实现，实际项目中可以使用更复杂的图片查看器
+    window.open(image.url, '_blank');
 }
 
 /**
@@ -321,7 +283,23 @@ function closeLightbox() {
  * 格式化日期
  */
 function formatDate(dateString) {
-    const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString('zh-CN', options);
+    // 检查日期字符串格式
+    if (!dateString) return '';
+    
+    try {
+        // 尝试解析日期字符串
+        const date = new Date(dateString);
+        
+        // 检查日期是否有效
+        if (isNaN(date.getTime())) {
+            console.error('Invalid date:', dateString);
+            return dateString; // 返回原始字符串
+        }
+        
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('zh-CN', options);
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return dateString; // 出错时返回原始字符串
+    }
 }

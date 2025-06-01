@@ -5,24 +5,123 @@
 
 // DOM加载完成后执行
 document.addEventListener('DOMContentLoaded', () => {
-    // 初始化代码背景
-    initCodeBackground();
+    console.log('=== INITIALIZING MAIN SCRIPT ===');
+    
+    // 初始化终端
+    initTerminal();
+    
+    // 初始化ASCII艺术
+    initAsciiArt();
+    
+    // 初始化项目展示
+    initProjects();
+    
+    // 初始化学术成果墙
+    initPublications();
+    
+    // 初始化博客聚合
+    initBlogs();
+    
+    // 初始化图库
+    initGallery();
+    
+    // 初始化国际化
+    initI18n();
+    
+    // 设置当前年份
+    const currentYearElement = document.getElementById('current-year');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+    }
+    
+    // 初始化导航栏交互
+    initNavigation();
     
     // 初始化移动端菜单
     initMobileMenu();
     
+    // 初始化代码背景
+    initCodeBackground();
+    
+    // 初始化摘要切换按钮
+    initAbstractToggles();
+    
     // 初始化滚动动画
     initScrollAnimations();
     
-    // 初始化键盘快捷键
-    initKeyboardShortcuts();
+    // 添加终端按钮
+    addTerminalButton();
     
-    // 初始化PWA功能
+    // 初始化PWA
     initPWA();
     
-    // 处理404错误页面
+    // 初始化错误页面
     initErrorPage();
 });
+
+/**
+ * 初始化滚动动画
+ * 确保所有fade-in元素能够正确显示
+ */
+function initScrollAnimations() {
+    console.log('Initializing scroll animations...');
+    
+    // 等待一小段时间确保DOM完全加载
+    setTimeout(() => {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        console.log(`Found ${fadeElements.length} fade-in elements`);
+        
+        // 立即显示所有fade-in元素
+        fadeElements.forEach((element, index) => {
+            // 延迟显示，创建渐进效果
+            setTimeout(() => {
+                element.classList.add('visible');
+                console.log(`Made element ${index + 1} visible:`, element);
+            }, index * 150);
+        });
+        
+        // 设置滚动监听器用于后续动态添加的元素
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        // 观察所有fade-in元素
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+    }, 100);
+}
+
+/**
+ * 初始化摘要切换按钮
+ */
+function initAbstractToggles() {
+    console.log('Initializing abstract toggles');
+    const toggleButtons = document.querySelectorAll('.abstract-toggle');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // 找到最近的摘要内容
+            const abstractContent = button.closest('div').nextElementSibling;
+            if (abstractContent && abstractContent.classList.contains('abstract-content')) {
+                // 切换显示/隐藏
+                if (abstractContent.style.display === 'none' || !abstractContent.style.display) {
+                    abstractContent.style.display = 'block';
+                    button.textContent = 'Hide Abstract';
+                } else {
+                    abstractContent.style.display = 'none';
+                    button.textContent = 'Abstract';
+                }
+            }
+        });
+    });
+}
 
 /**
  * 初始化代码背景
@@ -85,6 +184,49 @@ function initCodeBackground() {
 }
 
 /**
+ * 初始化导航栏交互
+ */
+function initNavigation() {
+    // 平滑滚动到锚点
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // 高亮当前导航项
+    window.addEventListener('scroll', () => {
+        const sections = document.querySelectorAll('section[id]');
+        const scrollPos = window.scrollY + 100;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                // 移除所有活动状态
+                navLinks.forEach(link => link.classList.remove('active'));
+                // 添加当前活动状态
+                const activeLink = document.querySelector(`nav a[href="#${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+        });
+    });
+}
+
+/**
  * 初始化移动端菜单
  */
 function initMobileMenu() {
@@ -110,34 +252,47 @@ function initMobileMenu() {
  * 初始化滚动动画
  * 使用Intersection Observer API实现元素进入视口时的动画
  */
+/**
+ * 初始化滚动动画
+ * 为带有fade-in类的元素添加可见性检测
+ */
 function initScrollAnimations() {
-    // 添加fade-in类到需要动画的元素
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        const heading = section.querySelector('h2');
-        const content = section.querySelectorAll('p, .grid, .publications-timeline, .projects-container, .blog-container, .gallery-container');
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    // 立即显示视口内的元素
+    fadeElements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        const isVisible = (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
         
-        if (heading) heading.classList.add('fade-in');
-        content.forEach(el => el.classList.add('fade-in'));
+        if (isVisible) {
+            element.classList.add('visible');
+        }
     });
     
-    // 创建Intersection Observer
+    // 创建Intersection Observer观察滚动中出现的元素
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // 如果元素已经显示，不再观察它
+                // 一旦元素可见，不再观察它
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.1, // 当10%的元素可见时触发
+        threshold: 0.1, // 当元素10%可见时触发
         rootMargin: '0px 0px -50px 0px' // 提前50px触发
     });
     
-    // 观察所有带有fade-in类的元素
-    document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
+    // 观察所有尚未可见的元素
+    fadeElements.forEach(element => {
+        if (!element.classList.contains('visible')) {
+            observer.observe(element);
+        }
     });
 }
 
@@ -146,26 +301,33 @@ function initScrollAnimations() {
  */
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
-        // Alt+G: 打开GitHub
+        // 在Mac上，altKey对应Option键，但有时可能不被正确识别
+        // 添加一个直接的按钮来打开终端
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+        
+        // Alt/Option+G: 打开GitHub
         if (e.altKey && e.key === 'g') {
             window.open('https://github.com/Neo-ZLH', '_blank');
         }
         
-        // Alt+T: 打开/关闭终端
+        // Alt/Option+T: 打开/关闭终端
         if (e.altKey && e.key === 't') {
             toggleTerminal();
         }
         
-        // Alt+H: 回到顶部
+        // Alt/Option+H: 回到顶部
         if (e.altKey && e.key === 'h') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // Alt+P: 跳转到项目部分
+        // Alt/Option+P: 跳转到项目部分
         if (e.altKey && e.key === 'p') {
             document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
         }
     });
+    
+    // 添加一个可见的终端按钮
+    addTerminalButton();
 }
 
 /**
@@ -308,4 +470,25 @@ function formatDate(dateString) {
 function truncateText(text, maxLength) {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
+}
+
+/**
+ * 添加终端按钮
+ * 在页面右下角添加一个固定的按钮，点击后打开终端
+ */
+function addTerminalButton() {
+    // 创建按钮元素
+    const terminalButton = document.createElement('button');
+    terminalButton.id = 'terminal-button';
+    terminalButton.className = 'fixed bottom-4 right-4 bg-darker-bg border border-cyber-green/30 text-cyber-green rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-30 hover:bg-gray-800 transition-colors';
+    terminalButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3" /></svg>';
+    terminalButton.title = '打开终端 (Alt+T)';
+    
+    // 添加点击事件
+    terminalButton.addEventListener('click', () => {
+        toggleTerminal();
+    });
+    
+    // 添加到页面
+    document.body.appendChild(terminalButton);
 }

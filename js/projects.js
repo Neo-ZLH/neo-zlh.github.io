@@ -3,92 +3,185 @@
  * 负责加载和展示GitHub项目信息
  */
 
-// DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', () => {
-    // 初始化项目陈列室
-    initProjects();
-});
+// 注释掉DOMContentLoaded事件监听器，由main.js统一管理初始化
+// document.addEventListener('DOMContentLoaded', () => {
+//     // 初始化项目陈列室
+//     initProjects();
+// });
 
 /**
  * 初始化项目陈列室
  */
 function initProjects() {
-    const projectsContainer = document.querySelector('.projects-container');
-    if (!projectsContainer) return;
+    console.log('initProjects called');
+    
+    // 尝试多种选择器以确保找到容器
+    let projectsContainer = document.querySelector('.projects-container');
+    console.log('Initial container query result:', projectsContainer);
+    
+    if (!projectsContainer) {
+        console.error('Projects container not found with .projects-container selector!');
+        // 尝试其他可能的选择器
+        projectsContainer = document.querySelector('#projects .projects-container');
+        console.log('Secondary container query result:', projectsContainer);
+        
+        if (!projectsContainer) {
+            console.error('Projects container not found with #projects .projects-container selector either!');
+            // 尝试直接获取项目部分并手动创建容器
+            const projectsSection = document.getElementById('projects');
+            console.log('Projects section found:', projectsSection);
+            
+            if (projectsSection) {
+                // 查找现有的加载提示元素
+                const loadingElement = projectsSection.querySelector('[data-i18n="loading_projects"]');
+                if (loadingElement) {
+                    // 使用加载提示元素的父元素作为容器
+                    projectsContainer = loadingElement.parentElement;
+                    console.log('Using loading element parent as container:', projectsContainer);
+                } else {
+                    console.error('Loading element not found in projects section');
+                }
+            } else {
+                console.error('Projects section not found at all!');
+            }
+            
+            if (!projectsContainer) {
+                // 输出所有可能的容器以便调试
+                console.log('Available containers:', document.querySelectorAll('.projects-container'));
+                console.log('Available sections:', document.querySelectorAll('section'));
+                console.log('Document body HTML:', document.body.innerHTML);
+                
+                // 尝试创建一个新的容器
+                console.log('Attempting to create a new container in projects section');
+                if (projectsSection) {
+                    projectsContainer = document.createElement('div');
+                    projectsContainer.className = 'projects-container grid md:grid-cols-2 gap-6 fade-in';
+                    projectsSection.appendChild(projectsContainer);
+                    console.log('Created new container:', projectsContainer);
+                } else {
+                    console.error('Cannot create container: projects section not found');
+                    return;
+                }
+            }
+        }
+    }
+    
+    console.log('Initializing projects...');
+    console.log('Container found:', projectsContainer);
+    console.log('Container HTML:', projectsContainer.outerHTML);
+    console.log('Container classes:', projectsContainer.className);
     
     // 获取项目数据
     fetchProjects()
         .then(projects => {
+            console.log('Projects fetched successfully:', projects);
             // 清空加载提示
             projectsContainer.innerHTML = '';
             
             // 创建项目卡片
-            projects.forEach(project => {
-                const projectCard = createProjectCard(project);
-                projectsContainer.appendChild(projectCard);
-            });
+            if (projects && Array.isArray(projects) && projects.length > 0) {
+                console.log(`Creating ${projects.length} project cards`);
+                let successCount = 0;
+                let errorCount = 0;
+                
+                projects.forEach((project, index) => {
+                    console.log(`Creating project card ${index + 1}/${projects.length} for: ${project.name}`);
+                    try {
+                        const projectCard = createProjectCard(project);
+                        if (projectCard) {
+                            projectsContainer.appendChild(projectCard);
+                            console.log(`Project card ${index + 1} appended to container`);
+                            successCount++;
+                        } else {
+                            console.error(`Project card ${index + 1} creation returned null or undefined`);
+                            errorCount++;
+                            // 创建一个错误卡片
+                            const errorCard = document.createElement('div');
+                            errorCard.className = 'project-card fade-in visible';
+                            errorCard.innerHTML = `
+                                <h3 class="project-title">${project.name || '未知项目'}</h3>
+                                <p class="project-description">创建项目卡片失败: 返回了空值</p>
+                            `;
+                            projectsContainer.appendChild(errorCard);
+                        }
+                    } catch (error) {
+                        console.error(`Error creating card for project ${project.name}:`, error);
+                        errorCount++;
+                        // 创建一个错误卡片作为后备
+                        try {
+                            const errorCard = document.createElement('div');
+                            errorCard.className = 'project-card fade-in visible';
+                            errorCard.innerHTML = `
+                                <h3 class="project-title">${project.name || '未知项目'}</h3>
+                                <p class="project-description">加载项目信息时出错: ${error.message}</p>
+                            `;
+                            projectsContainer.appendChild(errorCard);
+                            console.log(`Error card for project ${index + 1} appended to container`);
+                        } catch (fallbackError) {
+                            console.error('Failed to create error card:', fallbackError);
+                        }
+                    }
+                });
+                
+                console.log(`Project cards creation complete. Success: ${successCount}, Errors: ${errorCount}`);
+                
+                // 检查是否所有卡片都创建失败
+                if (successCount === 0 && errorCount > 0) {
+                    console.error('All project cards failed to create');
+                    projectsContainer.innerHTML += `<div class="text-center text-red-500 py-8 md:col-span-2">所有项目卡片创建失败，请检查控制台获取详细错误信息</div>`;
+                }
+            } else {
+                console.error('No projects data or invalid projects data:', projects);
+                projectsContainer.innerHTML = `<div class="text-center text-red-500 py-8 md:col-span-2">没有可用的项目数据</div>`;
+            }
         })
         .catch(error => {
             console.error('Error loading projects:', error);
-            projectsContainer.innerHTML = `<div class="text-center text-red-500 py-8 md:col-span-2">加载项目数据时出错</div>`;
+            projectsContainer.innerHTML = `<div class="text-center text-red-500 py-8 md:col-span-2">加载项目数据时出错: ${error.message}</div>`;
         });
 }
 
 /**
  * 获取项目数据
- * 在实际应用中，可以使用GitHub API获取真实数据
+ * @returns {Promise<Array>} 项目数据数组
  */
-async function fetchProjects() {
-    // 模拟API延迟
-    await new Promise(resolve => setTimeout(resolve, 1000));
+function fetchProjects() {
+    console.log('Fetching projects data...');
     
-    // 示例项目数据
-    return [
-        {
-            name: 'DataGovernancePlatform',
-            description: '企业级数据治理平台，提供数据质量评估、元数据管理、数据血缘分析和数据标准化功能。',
-            language: 'Python',
-            stars: 128,
-            forks: 45,
-            url: 'https://github.com/Neo-ZLH/DataGovernancePlatform',
-            homepage: '#',
-            topics: ['data-governance', 'python', 'flask', 'react', 'machine-learning'],
-            installCommand: 'pip install data-governance-platform'
-        },
-        {
-            name: 'DistributedDB',
-            description: '高性能分布式数据库系统，支持强一致性事务和水平扩展，适用于高并发OLTP场景。',
-            language: 'C++',
-            stars: 256,
-            forks: 78,
-            url: 'https://github.com/Neo-ZLH/DistributedDB',
-            homepage: '#',
-            topics: ['database', 'distributed-systems', 'c-plus-plus', 'consensus', 'transaction'],
-            installCommand: 'git clone https://github.com/Neo-ZLH/DistributedDB && cd DistributedDB && make install'
-        },
-        {
-            name: 'KnowledgeGraphEmbedding',
-            description: '知识图谱嵌入模型库，包含多种最新的图嵌入算法实现，支持时序知识图谱。',
-            language: 'Python',
-            stars: 342,
-            forks: 124,
-            url: 'https://github.com/Neo-ZLH/KnowledgeGraphEmbedding',
-            homepage: '#',
-            topics: ['knowledge-graph', 'graph-embedding', 'pytorch', 'deep-learning', 'nlp'],
-            installCommand: 'pip install kg-embedding'
-        },
-        {
-            name: 'AnomalyDetectionSystem',
-            description: '基于深度学习的数据异常检测系统，能够自动识别多种类型的数据异常，并提供可解释的分析。',
-            language: 'Python',
-            stars: 187,
-            forks: 56,
-            url: 'https://github.com/Neo-ZLH/AnomalyDetectionSystem',
-            homepage: '#',
-            topics: ['anomaly-detection', 'machine-learning', 'deep-learning', 'data-science', 'explainable-ai'],
-            installCommand: 'pip install anomaly-detection-system'
+    return new Promise((resolve, reject) => {
+        try {
+            // 简化的项目数据，确保结构一致
+            const projects = [
+                {
+                    name: "个人博客系统",
+                    description: "基于HTML、CSS和JavaScript的响应式个人博客系统",
+                    tech: ["HTML", "CSS", "JavaScript"],
+                    url: "https://github.com/yourusername/blog",
+                    install: "git clone https://github.com/yourusername/blog.git",
+                    stars: 45,
+                    forks: 12
+                },
+                {
+                    name: "数据可视化工具",
+                    description: "一个简单的数据可视化工具",
+                    tech: ["Vue.js", "D3.js"],
+                    url: "https://github.com/yourusername/data-viz",
+                    install: "npm install @yourusername/data-viz",
+                    stars: 132,
+                    forks: 28
+                }
+            ];
+            
+            console.log(`Fetched ${projects.length} projects`);
+            console.log('Projects data:', JSON.stringify(projects, null, 2));
+            
+            // 直接返回项目数据，不做复杂验证
+            resolve(projects);
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+            reject(error);
         }
-    ];
+    });
 }
 
 /**
@@ -112,7 +205,7 @@ async function fetchGitHubProjects(username) {
             url: repo.html_url,
             homepage: repo.homepage,
             topics: repo.topics || [],
-            installCommand: repo.language === 'Python' ? `pip install ${repo.name.toLowerCase()}` : 
+            installCommand: repo.language === 'Python' ? `pip install ${repo.name.toLowerCase()}` :
                            repo.language === 'JavaScript' ? `npm install ${repo.name.toLowerCase()}` :
                            `git clone ${repo.html_url}`
         }));
@@ -124,49 +217,133 @@ async function fetchGitHubProjects(username) {
 
 /**
  * 创建项目卡片
+ * @param {Object} project 项目数据
+ * @returns {HTMLElement} 项目卡片元素
  */
 function createProjectCard(project) {
-    const card = document.createElement('div');
-    card.className = 'project-card fade-in';
+    console.log('Creating project card for:', project.name);
     
-    // 技术栈徽章
-    const techBadges = project.topics.map(topic => 
-        `<span class="tech-badge">${topic}</span>`
-    ).join('');
+    // 数据验证
+    if (!project) {
+        console.error('Project data is null or undefined');
+        return null;
+    }
     
-    // 构建卡片内容
-    card.innerHTML = `
-        <h3 class="project-title">${project.name}</h3>
-        <p class="project-description">${project.description}</p>
-        <div class="tech-stack">
-            ${techBadges}
-        </div>
-        <div class="install-command">${project.installCommand}</div>
-        <div class="project-stats">
-            <div class="stat-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-                </svg>
-                ${project.stars}
-            </div>
-            <div class="stat-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/>
-                </svg>
-                ${project.forks}
-            </div>
-            <div class="stat-item">
-                <span class="px-2 py-1 text-xs rounded" style="background-color: rgba(0, 255, 0, 0.1);">${project.language}</span>
-            </div>
-        </div>
-    `;
+    if (!project.name) {
+        console.error('Project name is missing');
+        project.name = '未命名项目';
+    }
     
-    // 添加点击事件，跳转到GitHub仓库
-    card.addEventListener('click', () => {
-        window.open(project.url, '_blank');
-    });
+    if (!project.description) {
+        console.warn('Project description is missing for', project.name);
+        project.description = '无描述';
+    }
     
-    return card;
+    // 创建卡片元素
+    try {
+        console.log('Creating card element for', project.name);
+        const card = document.createElement('div');
+        card.className = 'project-card fade-in visible';
+        
+        // 构建HTML内容
+        try {
+            let techBadges = '';
+            
+            // 技术栈徽章
+            if (project.tech && Array.isArray(project.tech) && project.tech.length > 0) {
+                console.log(`Processing ${project.tech.length} tech badges for`, project.name);
+                techBadges = '<div class="tech-stack">';
+                project.tech.forEach(tech => {
+                    if (tech && typeof tech === 'string' && tech.trim() !== '') {
+                        techBadges += `<span class="tech-badge">${tech}</span>`;
+                    }
+                });
+                techBadges += '</div>';
+            } else {
+                console.warn('No tech stack or empty tech array for', project.name);
+                techBadges = '<div class="tech-stack"><span class="tech-badge">未指定技术</span></div>';
+            }
+            
+            // 安装命令
+            let installCommand = '';
+            if (project.install) {
+                console.log('Adding install command for', project.name);
+                installCommand = `
+                    <div class="install-command">
+                        <code>${project.install}</code>
+                        <button class="copy-button" data-command="${project.install}">复制</button>
+                    </div>
+                `;
+            }
+            
+            // 项目统计
+            let stats = '';
+            if (project.stars !== undefined || project.forks !== undefined) {
+                console.log('Adding stats for', project.name);
+                stats = '<div class="project-stats">';
+                if (project.stars !== undefined) {
+                    stats += `<span class="stat-item">⭐ ${project.stars}</span>`;
+                }
+                if (project.forks !== undefined) {
+                    stats += `<span class="stat-item">🍴 ${project.forks}</span>`;
+                }
+                stats += '</div>';
+            }
+            
+            // 构建完整的卡片内容
+            card.innerHTML = `
+                <h3 class="project-title">
+                    ${project.url ? `<a href="${project.url}" target="_blank">${project.name}</a>` : project.name}
+                </h3>
+                <p class="project-description">${project.description}</p>
+                ${techBadges}
+                ${installCommand}
+                ${stats}
+            `;
+            
+            console.log('Card HTML built successfully for', project.name);
+        } catch (htmlError) {
+            console.error('Error building HTML for', project.name, htmlError);
+            // 简化的卡片内容作为后备
+            card.innerHTML = `
+                <h3 class="project-title">${project.name}</h3>
+                <p class="project-description">${project.description || '无描述'}</p>
+                <div class="tech-stack"><span class="tech-badge">构建卡片内容时出错</span></div>
+            `;
+        }
+        
+        // 添加复制按钮功能
+        try {
+            const copyButton = card.querySelector('.copy-button');
+            if (copyButton) {
+                console.log('Adding copy button functionality for', project.name);
+                copyButton.addEventListener('click', function() {
+                    const command = this.getAttribute('data-command');
+                    navigator.clipboard.writeText(command)
+                        .then(() => {
+                            const originalText = this.textContent;
+                            this.textContent = '已复制!';
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('复制失败:', err);
+                            alert('复制失败: ' + err);
+                        });
+                });
+            }
+        } catch (copyError) {
+            console.error('Error setting up copy button for', project.name, copyError);
+            // 复制按钮出错不影响卡片显示，继续执行
+        }
+        
+        console.log('Project card created successfully for', project.name);
+        return card;
+    } catch (error) {
+        console.error('Fatal error creating card for', project.name, error);
+        throw error; // 重新抛出错误以便上层处理
+    }
 }
 
 /**
