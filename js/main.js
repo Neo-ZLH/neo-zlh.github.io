@@ -7,7 +7,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('=== INITIALIZING MAIN SCRIPT ===');
     
-    // 初始化终端
+    // 先初始化国际化，确保语言设置正确
+    initI18n();
+    
+    // 初始化终端（在i18n初始化后）
     initTerminal();
     
     // 初始化ASCII艺术
@@ -24,9 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 初始化图库
     initGallery();
-    
-    // 初始化国际化
-    initI18n();
     
     // 设置当前年份
     const currentYearElement = document.getElementById('current-year');

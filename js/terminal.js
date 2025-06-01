@@ -4,21 +4,23 @@
  */
 
 // DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', () => {
-    // 确保在i18n初始化后再初始化终端
-    // 如果window.i18n已经存在，直接初始化终端
-    if (window.i18n) {
-        initTerminal();
-    } else {
-        // 否则等待i18n初始化完成
-        const checkI18n = setInterval(() => {
-            if (window.i18n) {
-                clearInterval(checkI18n);
-                initTerminal();
-            }
-        }, 100);
-    }
-});
+// 注意：终端初始化已经在main.js中处理，这里不再重复初始化
+// 这样可以避免终端欢迎消息被显示两次
+// document.addEventListener('DOMContentLoaded', () => {
+//     // 确保在i18n初始化后再初始化终端
+//     // 如果window.i18n已经存在，直接初始化终端
+//     if (window.i18n) {
+//         initTerminal();
+//     } else {
+//         // 否则等待i18n初始化完成
+//         const checkI18n = setInterval(() => {
+//             if (window.i18n) {
+//                 clearInterval(checkI18n);
+//                 initTerminal();
+//             }
+//         }, 100);
+//     }
+// });
 
 /**
  * 初始化终端模拟器
@@ -58,8 +60,11 @@ function initTerminal() {
     });
     
     // 添加欢迎消息
-    // 确保 window.i18n 存在
+    // 确保 window.i18n 存在并获取当前语言
     if (window.i18n && window.i18n.t) {
+        // 清空之前的输出
+        terminalOutput.innerHTML = '';
+        // 添加当前语言的欢迎消息
         addMessageToOutput(window.i18n.t('terminal_welcome'), terminalOutput);
         addMessageToOutput(window.i18n.t('terminal_help_tip'), terminalOutput);
     } else {
@@ -254,22 +259,65 @@ function showAbout(outputElement) {
  * 显示技能列表
  */
 function showSkills(outputElement) {
-    const skills = [
-        '编程语言:',
-        '  ▓▓▓▓▓▓▓▓▓▓ Python',
-        '  ▓▓▓▓▓▓▓▓   Java',
-        '  ▓▓▓▓▓▓▓    C/C++',
-        '  ▓▓▓▓▓▓     JavaScript',
-        '  ▓▓▓▓       SQL',
-        '',
-        '技术栈:',
-        '  ▓▓▓▓▓▓▓▓▓  数据挖掘',
-        '  ▓▓▓▓▓▓▓▓   机器学习',
-        '  ▓▓▓▓▓▓▓    深度学习',
-        '  ▓▓▓▓▓▓     数据库系统',
-        '  ▓▓▓▓▓      分布式系统',
-        '  ▓▓▓▓       Web开发'
-    ];
+    let skills;
+    
+    // 检查 i18n 是否初始化，并获取当前语言
+    if (window.i18n && window.i18n.t) {
+        // 根据当前语言显示技能列表
+        if (window.i18n.getCurrentLang() === 'en') {
+            skills = [
+                'Programming Languages:',
+                '  ▓▓▓▓▓▓▓▓▓▓ Python',
+                '  ▓▓▓▓▓▓▓▓   Java',
+                '  ▓▓▓▓▓▓▓    C/C++',
+                '  ▓▓▓▓▓▓     JavaScript',
+                '  ▓▓▓▓       SQL',
+                '',
+                'Tech Stack:',
+                '  ▓▓▓▓▓▓▓▓▓  Data Mining',
+                '  ▓▓▓▓▓▓▓▓   Machine Learning',
+                '  ▓▓▓▓▓▓▓    Deep Learning',
+                '  ▓▓▓▓▓▓     Database Systems',
+                '  ▓▓▓▓▓      Distributed Systems',
+                '  ▓▓▓▓       Web Development'
+            ];
+        } else {
+            skills = [
+                '编程语言:',
+                '  ▓▓▓▓▓▓▓▓▓▓ Python',
+                '  ▓▓▓▓▓▓▓▓   Java',
+                '  ▓▓▓▓▓▓▓    C/C++',
+                '  ▓▓▓▓▓▓     JavaScript',
+                '  ▓▓▓▓       SQL',
+                '',
+                '技术栈:',
+                '  ▓▓▓▓▓▓▓▓▓  数据挖掘',
+                '  ▓▓▓▓▓▓▓▓   机器学习',
+                '  ▓▓▓▓▓▓▓    深度学习',
+                '  ▓▓▓▓▓▓     数据库系统',
+                '  ▓▓▓▓▓      分布式系统',
+                '  ▓▓▓▓       Web开发'
+            ];
+        }
+    } else {
+        // 如果 i18n 未初始化，使用默认中文
+        skills = [
+            '编程语言:',
+            '  ▓▓▓▓▓▓▓▓▓▓ Python',
+            '  ▓▓▓▓▓▓▓▓   Java',
+            '  ▓▓▓▓▓▓▓    C/C++',
+            '  ▓▓▓▓▓▓     JavaScript',
+            '  ▓▓▓▓       SQL',
+            '',
+            '技术栈:',
+            '  ▓▓▓▓▓▓▓▓▓  数据挖掘',
+            '  ▓▓▓▓▓▓▓▓   机器学习',
+            '  ▓▓▓▓▓▓▓    深度学习',
+            '  ▓▓▓▓▓▓     数据库系统',
+            '  ▓▓▓▓▓      分布式系统',
+            '  ▓▓▓▓       Web开发'
+        ];
+    }
     
     skills.forEach(line => {
         addMessageToOutput(line, outputElement);

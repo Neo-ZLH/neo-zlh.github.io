@@ -225,6 +225,11 @@ function switchLanguage() {
     localStorage.setItem('preferred_language', currentLang);
     // 更新语言切换按钮文本
     updateLanguageSwitchButton();
+    
+    // 如果终端已初始化，则重新初始化终端以更新欢迎消息
+    if (typeof initTerminal === 'function') {
+        initTerminal();
+    }
 }
 
 // 更新页面内容
@@ -264,11 +269,12 @@ function initI18n() {
     updateLanguageSwitchButton();
 }
 
-// 导出函数
+// 导出函数和当前语言
 window.i18n = {
     t,
     switchLanguage,
-    initI18n
+    initI18n,
+    getCurrentLang: () => currentLang
 };
 
 // 页面加载完成后初始化
