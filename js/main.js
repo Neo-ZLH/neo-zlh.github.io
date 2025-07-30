@@ -7,26 +7,65 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('=== INITIALIZING MAIN SCRIPT ===');
     
-    // 先初始化国际化，确保语言设置正确
-    initI18n();
-    
-    // 初始化终端（在i18n初始化后）
-    initTerminal();
-    
-    // 初始化ASCII艺术
-    initAsciiArt();
-    
-    // 初始化项目展示
-    initProjects();
-    
-    // 初始化学术成果墙
-    initPublications();
-    
-    // 初始化博客聚合
-    initBlogs();
-    
-    // 初始化图库
-    initGallery();
+    try {
+        // 先初始化国际化，确保语言设置正确
+        if (typeof initI18n === 'function') {
+            console.log('Initializing i18n...');
+            initI18n();
+        } else {
+            console.error('initI18n is not a function');
+        }
+        
+        // 初始化终端（在i18n初始化后）
+        if (typeof initTerminal === 'function') {
+            console.log('Initializing terminal...');
+            initTerminal();
+        } else {
+            console.error('initTerminal is not a function');
+        }
+        
+        // 初始化ASCII艺术
+        if (typeof initAsciiArt === 'function') {
+            console.log('Initializing ASCII art...');
+            initAsciiArt();
+        } else {
+            console.error('initAsciiArt is not a function');
+        }
+        
+        // 初始化项目展示
+        if (typeof initProjects === 'function') {
+            console.log('Initializing projects...');
+            initProjects();
+        } else {
+            console.error('initProjects is not a function');
+        }
+        
+        // 初始化学术成果墙
+        if (typeof initPublications === 'function') {
+            console.log('Initializing publications...');
+            initPublications();
+        } else {
+            console.error('initPublications is not a function');
+        }
+        
+        // 初始化博客聚合
+        if (typeof initBlogs === 'function') {
+            console.log('Initializing blogs...');
+            initBlogs();
+        } else {
+            console.error('initBlogs is not a function');
+        }
+        
+        // 初始化图库
+        if (typeof initGallery === 'function') {
+            console.log('Initializing gallery...');
+            initGallery();
+        } else {
+            console.error('initGallery is not a function');
+        }
+    } catch (error) {
+        console.error('Error during initialization:', error);
+    }
     
     // 设置当前年份
     const currentYearElement = document.getElementById('current-year');

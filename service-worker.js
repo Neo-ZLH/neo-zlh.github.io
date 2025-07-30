@@ -80,6 +80,29 @@ self.addEventListener('fetch', event => {
     return networkFirst(event);
   }
   
+  // 特殊处理.md文件请求，确保它们作为文本返回而不是下载
+  if (url.pathname.endsWith('.md')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // 创建一个新的响应，将Content-Type设置为text/plain
+          return response.blob().then(blob => {
+            return new Response(blob, {
+              headers: {
+                'Content-Type': 'text/plain; charset=UTF-8',
+                'Content-Disposition': 'inline'
+              }
+            });
+          });
+        })
+        .catch(() => {
+          // 如果网络请求失败，尝试从缓存获取
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+  
   // 对静态资源使用缓存优先策略
   event.respondWith(cacheFirst(event.request));
 });

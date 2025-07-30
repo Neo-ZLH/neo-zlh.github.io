@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- 背景 -->
+  <rect width="512" height="512" fill="#121212" rx="64" ry="64"/>
+  
+  <!-- 终端窗口 -->
+  <rect x="64" y="96" width="384" height="320" fill="#1e1e1e" rx="8" ry="8" stroke="#00ff00" stroke-width="4"/>
+  
+  <!-- 终端标题栏 -->
+  <rect x="64" y="96" width="384" height="32" fill="#333" rx="8" ry="8"/>
+  
+  <!-- 终端按钮 -->
+  <circle cx="84" cy="112" r="6" fill="#ff5f56"/>
+  <circle cx="104" cy="112" r="6" fill="#ffbd2e"/>
+  <circle cx="124" cy="112" r="6" fill="#27c93f"/>
+  
+  <!-- 终端提示符和光标 -->
+  <text x="80" y="160" fill="#00ff00" font-family="monospace" font-size="18">$</text>
+  <text x="100" y="160" fill="#00ff00" font-family="monospace" font-size="18">cd ~/projects</text>
+  
+  <text x="80" y="190" fill="#00ff00" font-family="monospace" font-size="18">$</text>
+  <text x="100" y="190" fill="#00ff00" font-family="monospace" font-size="18">ls</text>
+  
+  <!-- 文件列表 -->
+  <text x="80" y="220" fill="#3a96dd" font-family="monospace" font-size="16">publications/</text>
+  <text x="200" y="220" fill="#3a96dd" font-family="monospace" font-size="16">projects/</text>
+  <text x="320" y="220" fill="#3a96dd" font-family="monospace" font-size="16">blog/</text>
+  
+  <text x="80" y="250" fill="#00ff00" font-family="monospace" font-size="18">$</text>
+  <text x="100" y="250" fill="#00ff00" font-family="monospace" font-size="18">cat about.md</text>
+  
+  <!-- 关于文本 -->
+  <text x="80" y="280" fill="#ffffff" font-family="monospace" font-size="14">## About</text>
+  <text x="80" y="300" fill="#cccccc" font-family="monospace" font-size="14">Computer Science Researcher</text>
+  <text x="80" y="320" fill="#cccccc" font-family="monospace" font-size="14">Data Science Enthusiast</text>
+  <text x="80" y="340" fill="#cccccc" font-family="monospace" font-size="14">Open Source Contributor</text>
+  
+  <!-- 光标 -->
+  <rect x="80" y="360" width="8" height="16" fill="#00ff00">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- 代码符号装饰 -->
+  <text x="400" y="380" fill="#00ff00" font-family="monospace" font-size="24" opacity="0.5">{}</text>
+  <text x="360" y="340" fill="#00ff00" font-family="monospace" font-size="24" opacity="0.5">;</text>
+  <text x="380" y="300" fill="#00ff00" font-family="monospace" font-size="24" opacity="0.5">()</text>
+  <text x="420" y="260" fill="#00ff00" font-family="monospace" font-size="24" opacity="0.5">[]</text>
+</svg>
