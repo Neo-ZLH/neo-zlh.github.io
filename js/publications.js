@@ -89,13 +89,17 @@ function loadPublications(container) {
 }
 
 /**
- * 渲染学术成果列表
+ * 渲染学术成果时间轴
  */
 function renderPublications(publications, container) {
-    console.log('开始渲染学术成果...');
+    console.log('开始渲染学术成果时间轴...');
     
     // 清空容器
     container.innerHTML = '';
+    
+    // 创建时间轴容器
+    const timelineContainer = document.createElement('div');
+    timelineContainer.className = 'timeline-container';
     
     // 按年份分组
     const publicationsByYear = {};
@@ -114,45 +118,46 @@ function renderPublications(publications, container) {
         return parseInt(b) - parseInt(a);
     });
     
-    // 渲染每个年份的论文
-    sortedYears.forEach(year => {
-        // 创建年份标题
-        const yearSection = document.createElement('div');
-        yearSection.className = 'year-section mb-8';
+    // 渲染每个年份的时间轴节点
+    sortedYears.forEach((year, yearIndex) => {
+        // 创建年份时间轴项
+        const timelineItem = document.createElement('div');
+        timelineItem.className = 'timeline-item';
         
-        const yearHeader = document.createElement('div');
-        yearHeader.className = 'year-header mb-4';
+        // 创建年份节点
+        const yearNode = document.createElement('div');
+        yearNode.className = 'timeline-year-node';
         
-        const yearBadge = document.createElement('div');
-        yearBadge.className = 'inline-block bg-cyber-green text-black px-3 py-1 rounded text-sm font-bold';
-        yearBadge.textContent = year;
+        const yearCircle = document.createElement('div');
+        yearCircle.className = 'year-circle';
+        yearCircle.textContent = year;
         
-        yearHeader.appendChild(yearBadge);
-        yearSection.appendChild(yearHeader);
+        yearNode.appendChild(yearCircle);
+        timelineItem.appendChild(yearNode);
         
-        // 渲染该年份的论文
+        // 创建该年份的论文内容区域
+        const contentArea = document.createElement('div');
+        contentArea.className = 'timeline-content';
+        
         const yearPublications = publicationsByYear[year];
-        yearPublications.forEach((pub, index) => {
+        yearPublications.forEach((pub, pubIndex) => {
             try {
-                const card = createPublicationCard(pub);
-                if (card) {
-                    // 移除年份徽章，因为已经有年份标题了
-                    const yearBadgeInCard = card.querySelector('.year-badge');
-                    if (yearBadgeInCard) {
-                        yearBadgeInCard.remove();
-                    }
-                    yearSection.appendChild(card);
-                    console.log(`✅ 成功创建 ${year} 年第 ${index + 1} 个学术成果卡片`);
+                const pubItem = createTimelinePublicationItem(pub, pubIndex);
+                if (pubItem) {
+                    contentArea.appendChild(pubItem);
+                    console.log(`✅ 成功创建 ${year} 年第 ${pubIndex + 1} 个学术成果项`);
                 }
             } catch (error) {
-                console.error(`❌ 创建 ${year} 年第 ${index + 1} 个学术成果卡片时出错:`, error);
+                console.error(`❌ 创建 ${year} 年第 ${pubIndex + 1} 个学术成果项时出错:`, error);
             }
         });
         
-        container.appendChild(yearSection);
+        timelineItem.appendChild(contentArea);
+        timelineContainer.appendChild(timelineItem);
     });
     
-    console.log('✅ 学术成果渲染完成');
+    container.appendChild(timelineContainer);
+    console.log('✅ 学术成果时间轴渲染完成');
 }
 
 /**
@@ -225,48 +230,57 @@ function fetchPublications() {
 }
 
 /**
- * 创建学术成果卡片
+ * 创建时间轴论文项
  */
-function createPublicationCard(pub) {
+function createTimelinePublicationItem(pub, index) {
     if (!pub || !pub.title) {
         console.error('Publication data is incomplete:', pub);
         return null;
     }
     
-    const card = document.createElement('div');
-    card.className = 'publication-card publication-card-visible fade-in visible';
-    card.style.cssText = 'display: block; visibility: visible; opacity: 1;';
+    const item = document.createElement('div');
+    item.className = 'timeline-publication-item';
     
-    // 创建年份徽章
-    const yearBadge = document.createElement('div');
-    yearBadge.className = 'year-badge';
-    yearBadge.textContent = pub.year || 'N/A';
+    // 创建连接点
+    const connector = document.createElement('div');
+    connector.className = 'timeline-connector';
+    
+    // 创建内容卡片
+    const contentCard = document.createElement('div');
+    contentCard.className = 'timeline-publication-card';
     
     // 创建标题
     const title = document.createElement('h4');
-    title.className = 'title';
+    title.className = 'publication-title';
     title.textContent = pub.title;
     
     // 创建作者信息
     const authors = document.createElement('div');
-    authors.className = 'authors';
-    authors.textContent = pub.authors || 'Unknown Authors';
+    authors.className = 'publication-authors';
+    authors.innerHTML = `<span class="label">作者：</span>${pub.authors || 'Unknown Authors'}`;
     
     // 创建期刊信息
     const venue = document.createElement('div');
-    venue.className = 'venue';
-    venue.textContent = pub.venue || 'Unknown Venue';
+    venue.className = 'publication-venue';
+    venue.innerHTML = `<span class="label">发表于：</span>${pub.venue || 'Unknown Venue'}`;
+    
+    // 创建摘要（默认显示）
+    const abstract = document.createElement('div');
+    abstract.className = 'publication-abstract';
+    if (pub.abstract) {
+        abstract.innerHTML = `<span class="label">摘要：</span>${pub.abstract}`;
+    }
     
     // 创建链接区域
     const links = document.createElement('div');
-    links.className = 'links';
+    links.className = 'publication-links';
     
     if (pub.doi) {
         const doiLink = document.createElement('a');
         doiLink.href = `https://doi.org/${pub.doi}`;
         doiLink.target = '_blank';
-        doiLink.className = 'link-button';
-        doiLink.textContent = 'DOI';
+        doiLink.className = 'timeline-link-button';
+        doiLink.innerHTML = '📄 DOI';
         links.appendChild(doiLink);
     }
     
@@ -274,50 +288,31 @@ function createPublicationCard(pub) {
         const urlLink = document.createElement('a');
         urlLink.href = pub.url;
         urlLink.target = '_blank';
-        urlLink.className = 'link-button';
-        urlLink.textContent = 'URL';
+        urlLink.className = 'timeline-link-button';
+        urlLink.innerHTML = '🔗 链接';
         links.appendChild(urlLink);
     }
     
-    // 创建摘要切换按钮
+    // 组装内容卡片
+    contentCard.appendChild(title);
+    contentCard.appendChild(authors);
+    contentCard.appendChild(venue);
     if (pub.abstract) {
-        const abstractToggle = document.createElement('button');
-        abstractToggle.className = 'abstract-toggle link-button';
-        abstractToggle.textContent = 'Abstract';
-        links.appendChild(abstractToggle);
-        
-        // 创建摘要内容
-        const abstractContent = document.createElement('div');
-        abstractContent.className = 'abstract-content';
-        abstractContent.style.display = 'none';
-        abstractContent.textContent = pub.abstract;
-        
-        // 添加点击事件
-        abstractToggle.addEventListener('click', () => {
-            if (abstractContent.style.display === 'none') {
-                abstractContent.style.display = 'block';
-                abstractToggle.textContent = 'Hide Abstract';
-            } else {
-                abstractContent.style.display = 'none';
-                abstractToggle.textContent = 'Abstract';
-            }
-        });
-        
-        // 组装卡片
-        card.appendChild(yearBadge);
-        card.appendChild(title);
-        card.appendChild(authors);
-        card.appendChild(venue);
-        card.appendChild(links);
-        card.appendChild(abstractContent);
-    } else {
-        // 组装卡片（无摘要）
-        card.appendChild(yearBadge);
-        card.appendChild(title);
-        card.appendChild(authors);
-        card.appendChild(venue);
-        card.appendChild(links);
+        contentCard.appendChild(abstract);
     }
+    contentCard.appendChild(links);
     
-    return card;
+    // 组装时间轴项
+    item.appendChild(connector);
+    item.appendChild(contentCard);
+    
+    return item;
+}
+
+/**
+ * 创建学术成果卡片（保留兼容性）
+ */
+function createPublicationCard(pub) {
+    // 为了兼容性，调用新的时间轴项创建函数
+    return createTimelinePublicationItem(pub, 0);
 }

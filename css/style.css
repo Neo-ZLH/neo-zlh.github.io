@@ -128,10 +128,8 @@ a {
     overflow: visible !important;
     position: relative;
     z-index: 10;
-    border: 2px solid var(--cyber-green);
     padding: 20px;
     margin-top: 20px;
-    background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* 论文卡片 */
@@ -309,30 +307,236 @@ a {
     display: none;
 }
 
-/* 学术成果墙 */
+/* 学术成果墙 - 时间轴样式 */
 .publications-timeline {
-    display: block; /* 默认显示 */
+    display: block;
     opacity: 1;
     visibility: visible;
     transition: all 0.5s ease;
     position: relative;
     z-index: 10;
     margin-top: 2rem;
-    padding-left: 20px;
-    margin-left: 10px;
-    min-height: 200px; /* 确保有最小高度 */
+    min-height: 200px;
 }
 
-.publications-timeline::before {
+/* 时间轴容器 */
+.timeline-container {
+    position: relative;
+    padding-left: 60px;
+}
+
+/* 时间轴主线 */
+.timeline-container::before {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background-color: var(--cyber-green);
-    opacity: 0.5;
+    left: 30px;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--cyber-green), var(--cyber-blue));
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+/* 时间轴项 */
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* 年份节点 */
+.timeline-year-node {
+    position: absolute;
+    left: -45px;
+    top: 0;
+    z-index: 20;
+}
+
+.year-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+    color: var(--dark-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(0, 255, 0, 0.6), 0 0 40px rgba(0, 247, 255, 0.3);
+    }
+}
+
+/* 时间轴内容区域 */
+.timeline-content {
+    flex: 1;
+    margin-left: 20px;
+}
+
+/* 时间轴论文项 */
+.timeline-publication-item {
+    position: relative;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* 连接点 */
+.timeline-connector {
+    position: absolute;
+    left: -35px;
+    top: 15px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--cyber-blue);
+    border: 3px solid var(--dark-bg);
+    box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+    z-index: 15;
+}
+
+/* 时间轴论文卡片 */
+.timeline-publication-card {
+    background: linear-gradient(135deg, var(--darker-bg), rgba(18, 18, 18, 0.9));
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-left: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-publication-card:hover {
+    border-color: var(--cyber-green);
+    box-shadow: 0 8px 30px rgba(0, 255, 0, 0.2), 0 0 20px rgba(0, 247, 255, 0.1);
+}
+
+.timeline-publication-card::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid rgba(0, 255, 0, 0.2);
+}
+
+/* 论文标题 */
+.publication-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--cyber-green);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* 论文信息样式 */
+.publication-authors,
+.publication-venue {
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.publication-authors {
+    color: #b0b0b0;
+}
+
+.publication-venue {
+    color: var(--cyber-blue);
+}
+
+.publication-abstract {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    font-size: 14px;
+    color: #a0a0a0;
+    line-height: 1.6;
+    border-left: 3px solid var(--cyber-blue);
+}
+
+/* 标签样式 */
+.label {
+    color: var(--cyber-green);
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+/* 链接按钮 */
+.publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.timeline-link-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(0, 255, 0, 0.1));
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--cyber-blue);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.timeline-link-button:hover {
+    background: linear-gradient(135deg, rgba(0, 247, 255, 0.2), rgba(0, 255, 0, 0.2));
+    border-color: var(--cyber-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 247, 255, 0.3);
+    color: var(--cyber-green);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .timeline-container {
+        padding-left: 40px;
+    }
+    
+    .timeline-year-node {
+        left: -35px;
+    }
+    
+    .year-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 12px;
+    }
+    
+    .timeline-connector {
+        left: -25px;
+    }
+    
+    .timeline-publication-card {
+        margin-left: 10px;
+        padding: 16px;
+    }
+    
+    .publication-title {
+        font-size: 16px;
+    }
 }
 
 .publications-timeline .hidden {
